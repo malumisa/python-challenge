@@ -52,14 +52,14 @@ with open (budget_csv, encoding='utf') as csvfile:
         
  # The changes in "Profit/Losses" over the entire period, and then the average changes       
     print(f"Sum of changes in Profit/Losses  {sum_of_changes}")     
-    print(f"Average changes {sum_of_changes/85}")
+    print(f"Average changes $ {sum_of_changes/85}")
 
 
 # The greatest increase in profits (date and amount) over the entire period
-    print(f"Biggest Increase {biggest_change}")
+    print(f"Biggest Increase $ {biggest_change}")
 
 #  # The greatest decrease in profits (date and amount) over the entire period
-    print(f"Biggest Decrease {smallest_change}")
+    print(f"Biggest Decrease $ {smallest_change}")
 # 
 # 
 # ProfitLosses = int(row[1])
@@ -68,23 +68,20 @@ with open (budget_csv, encoding='utf') as csvfile:
 #         # Calculate the greatest decrease
 
 
-# # save the output file path
-# financial_analysis = os.path.join("Financial Analysis")
+# save the output file path
+financial_analysis = os.path.join("Financial Analysis")
 # # Calculate the Average Net Change
 
-# # Export the results to text file
-# with open(financial_analysis, "w") as txt_file:
-#     txt_file.write(f"Financial Analysis\n")
-#     txt_file.write(f"----------------------------\n")
-#     txt_file.write(f"Total Months: {total_months}\n")
-#     txt_file.write(f"Total: ${total_net}\n")
-#     txt_file.write(f"Average  Change: ${net_monthly_avg}\n")
-#     txt_file.write(f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]})\n")
-#     txt_file.write(f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]})\n")
+#  Export the results to text file
+with open(financial_analysis, "w") as txt_file:
+    txt_file.write(f"Financial Analysis\n")
+    txt_file.write(f"----------------------------\n")
+    txt_file.write(f"Total Months: {counter}\n")
+    txt_file.write(f"Total: ${Total_ProfitLoss}\n")
+    txt_file.write(f"Average  Change: ${sum_of_changes/85}\n")
+    txt_file.write(f"Greatest Increase in Profits: ${biggest_change[0]}\n")
+    txt_file.write(f"Greatest Decrease in Profits: ${smallest_change[0]}\n")
 
-
-#     Date = str(budget_data[0])
-#     ProfitLosses = int(budget_data[1])
 
 
 
