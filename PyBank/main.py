@@ -11,14 +11,14 @@ total_months = []
 month_of_change = []
 net_change_list = []
 Total_ProfitLoss = 0
-Greatest_Increase_in_Profits = []
-Greatest_Decrease_in_Profits =  []
 Average_Change = []
 counter = 0
 Previous_ProfitLoss = 1088983
 sum_of_changes = 0
 biggest_change =0
 smallest_change =0
+profit= []
+change_profit = []
 
 # With open  (udemy_csv, encoding ='utf-8') as csv file
 with open (budget_csv, encoding='utf') as csvfile:
@@ -28,11 +28,11 @@ with open (budget_csv, encoding='utf') as csvfile:
     header = next(csvreader)
 
 #Print the contents of each row
-    for Line in csvreader:
-        Date = Line [0]
-        ProfitLoss = int(Line[1])
+    for line in csvreader:
+        Date = line [0]
+        ProfitLoss = int(line[1])
         counter = counter + 1
-        Total_ProfitLoss += int(Line[1])
+        Total_ProfitLoss += int(line[1])
         changes =  (ProfitLoss - Previous_ProfitLoss)
         Previous_ProfitLoss = ProfitLoss
         sum_of_changes += changes
@@ -40,7 +40,8 @@ with open (budget_csv, encoding='utf') as csvfile:
             biggest_change = changes
         if  changes < smallest_change:
             smallest_change = changes
-
+    for i in range(len(profit)-1):
+        change_profit.append(profit[i+1]-profit[i])
 
 
 
@@ -61,12 +62,11 @@ with open (budget_csv, encoding='utf') as csvfile:
 #  # The greatest decrease in profits (date and amount) over the entire period
     print(f"Biggest Decrease $ {smallest_change}")
 # 
-# 
-# ProfitLosses = int(row[1])
-# print(f'[{int(max(ProfitLosses))}] {Date}')
-    
-#         # Calculate the greatest decrease
+#evaluate the max and min from list
 
+#using the index, 
+    # month_increase = change_profit.index(max(change_profit))+1
+    # month_decrease = change_profit.index(min(change_profit))+1
 
 # save the output file path
 financial_analysis = os.path.join("Financial Analysis")
@@ -78,11 +78,9 @@ with open(financial_analysis, "w") as txt_file:
     txt_file.write(f"----------------------------\n")
     txt_file.write(f"Total Months: {counter}\n")
     txt_file.write(f"Total: ${Total_ProfitLoss}\n")
-    txt_file.write(f"Average  Change: ${sum_of_changes/85}\n")
-    txt_file.write(f"Greatest Increase in Profits: ${biggest_change[0]}\n")
-    txt_file.write(f"Greatest Decrease in Profits: ${smallest_change[0]}\n")
-
-
-
-
+    txt_file.write(f"Average  Change: ${round(sum_of_changes/85, 2)}\n")
+    # txt_file.write(f"Greatest Increase in Profits: {counter[month_increase]} (${(str(biggest_change))}\n")
+    # txt_file.write(f"Greatest Decrease in Profits: {counter[month_increase]}  (${(str(smallest_change))}\n")
+    txt_file.write(f"Greatest Increase in Profits: {counter} (${(str(biggest_change))})\n")
+    txt_file.write(f"Greatest Decrease in Profits: {counter}  (${(str(smallest_change))})\n")
 

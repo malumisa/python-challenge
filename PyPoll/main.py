@@ -1,96 +1,77 @@
 import os
 import csv
 
-file_num = 1
 # path to collect data from the Resources folder
 election_csv =os.path.join("Resources", 'election_data.csv')
 
-# Lists to store data
-poll = {}
-total_votes = 0
-total_votes_cast = 0
-percent_count = []
-#candidates = list(df_ed["candidate"]. unique())
-elections = []
-percentage_votes_per_candidate = []
-total_votes_per_candidate = []
-winner_based_on_vote = []
-counter = 0
-
-
 # with open (csv, encoding = 'utf -8')  as csv file
 with open (election_csv, encoding = 'utf') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter = ",")
-    
-
+    csv_reader = csv.reader(csvfile, delimiter = ",")
 # Reading the header row
-    header = next(csvreader)
+    header = next(csv_reader)
 
-#print the contents of each row
-   
-    for line in csvreader:
-        counter = counter + 1
-        total_votes += 1
-        if line[2] in poll.keys():
-            poll[line[2]] = poll[line[2]]+1
-        else:
-            poll[line[2]] = 1
+#Calculating the Total number of votes cast
+    election_data = list(csv_reader)
+    total_vote = len(election_data)
 
+print("Election Results")
+print("--------------------------------------")
+
+print(f"The total number of votes cast is {total_vote}")
+print("--------------------------------------")
+
+# Calculating the total number of votes won per candidate. 
 candidates = []
-num_votes = []
+for row in election_data:
+        if row[2] not in candidates:
+            candidates.append(row[2])
 
-for key, value in poll.items():
-        candidates.append(key)
-        num_votes.append(value)
+votes = {}
+for name in candidates:
+        votes[name]=0
+    
+for name in candidates:
+        for row in election_data:
+            if row[2]==name:
+                votes[name]=votes[name]+1
 
-vote_percent = []
-for n in num_votes:
-    vote_percent.append(round(n/total_votes*100, 3)) 
-
-clean_data = list(zip(candidates, vote_percent, num_votes))
-for i in range(0, len(clean_data)): 
-     print(*clean_data[i])
-
-winner_list = []
-
-
-for name in clean_data:
-    if max(vote_percent) == name[1]:
-        winner_list.append(name[0])
-
-winner = winner_list[0]
-
-if len(winner_list) > 1:
-    for w in range(1, len(winner_list)):
-        winner = winner + ", " + winner_list[w]
-   
-
- # Total number of votes cast
-    #print(f"Total Votes {counter}")
+percentage_votes={}
+for name in votes:
+        percentage_votes[name]= votes[name]/total_vote*100
 
 
+for x in votes:
+        print(x + ":   " +str(round(percentage_votes[x],2)) + "%  "+ "("+str(votes[x])+")")
+
+# Getting the winning candidate   
+winner = ""
+max_vote=0
+for name in votes:
+        if votes[name]>max_vote:
+            winner=name
+            max_vote=votes[name]
+    
+print("--------------------------------------")
+print("Winner: " +winner)
+print("--------------------------------------")
+
+ # Exporting data to a text file
+electionfile = open("Election Results.txt","w")
+electionfile.write("Elections Results\n")
+electionfile.writelines("--------------------------------------\n")
+electionfile.writelines("The total number of votes is "+ str(total_vote))
+electionfile.write(" \n")
+electionfile.writelines("--------------------------------------")
+electionfile.write(" \n")
+
+for x in votes:
+        electionfile.writelines([x + ":   " +str(round(percentage_votes[x],2)) + "%  "+ "("+str(votes[x])+")\n"])     
+
+electionfile.writelines("--------------------------------------\n")
+electionfile.writelines("Winner:  " + (winner))    
+electionfile.write(" \n")
+electionfile.writelines("--------------------------------------\n")
+electionfile.close() 
 
 
-# Percentage of votes each candidate won to 3 decimal places
-#percent= round(int([2] /int([1]) * 100,3)
-#percentage_votes.append(str(percent) + "%"))
 
-#Total number of votes each candodate won
-
-
-#Winner of the election based on popular votes
-
-
-#  save results to output file
-election_results = os.path.join("Election Results")
-#  Export the electoion results to text file
-with open(election_results, "w") as txt_file:
-     txt_file.write(f"Election Results\n")
-     txt_file.write(f"----------------------------\n")
-     txt_file.write(f"Total Votes : {counter}\n")
-     txt_file.write(f"{(clean_data[0])}\n")
-     txt_file.write(f"{clean_data[1]} + \n")
-     txt_file.write(f"{clean_data[2]}\n")
-     txt_file.write(f"----------------------------\n")
-     txt_file.write(f"Winner: {winner})\n")
-     txt_file.write(f"----------------------------\n")
